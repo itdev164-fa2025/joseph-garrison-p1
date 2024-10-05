@@ -3,8 +3,8 @@ import { graphql } from "gatsby";
 import Layout from '../components/layout';
 import styled from "styled-components";
 import { GatsbyImage } from "gatsby-plugin-image";
- 
- 
+
+
 const StyledTag = styled.li`
     background-color: var(--color-bg-secondary);
     padding: 5px 20px;
@@ -14,7 +14,7 @@ const StyledTag = styled.li`
 const StyledHeading = styled.h1`
     margin-bottom: 10px;
 `
- 
+
 const StyledContainer = styled.div`
     display: flex;
  
@@ -33,7 +33,7 @@ const StyledContainer = styled.div`
     }
 `
 
- 
+
 const ImageDetails = ({ data }) => {
     const imageDetails = data.contentfulImageGallery;
     const formattedDate = new Date(imageDetails.publishDate).toLocaleDateString('en-US', {
@@ -41,10 +41,10 @@ const ImageDetails = ({ data }) => {
         month: 'long',
         day: 'numeric'
     });
- 
+
     return (
         <Layout>
-          <StyledContainer>
+            <StyledContainer>
                 <div>
                     <GatsbyImage
                         image={imageDetails.image.gatsbyImageData}
@@ -56,13 +56,14 @@ const ImageDetails = ({ data }) => {
                     {imageDetails.tags && (
                         <ul>
                             {
-                                    imageDetails.tags.map(tag => (
-                                        <StyledTag>{tag}</StyledTag>
-                                    ))
-                                }
+                                imageDetails.tags.map(tag => (
+                                    <StyledTag>{tag}</StyledTag>
+                                ))
+                            }
                         </ul>
                     )}
- 
+                    <div dangerouslySetInnerHTML={{ __html: imageDetails.description.childMarkdownRemark.html }}></div>
+
                 </div>
             </StyledContainer>
 
@@ -70,15 +71,20 @@ const ImageDetails = ({ data }) => {
         </Layout>
     )
 }
- 
+
 export default ImageDetails;
- 
+
 export const pageQuery = graphql`
     query imageGalleryQuery($slug: String!) {
         contentfulImageGallery(slug: {eq: $slug}) {
             title
             tags
             publishDate
+             description{
+            childMarkdownRemark {
+              html
+            }
+          }
             image {
                 gatsbyImageData(
                     layout: CONSTRAINED
