@@ -62,7 +62,10 @@ const ImageDetails = ({ data }) => {
                             }
                         </ul>
                     )}
-                    <div dangerouslySetInnerHTML={{ __html: imageDetails.description.childMarkdownRemark.html }}></div>
+                     {imageDetails.description && (
+                        <div dangerouslySetInnerHTML={{ __html: imageDetails.description.childMarkdownRemark.html }}></div>
+                    )}
+ 
 
                 </div>
             </StyledContainer>
